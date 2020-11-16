@@ -33,14 +33,15 @@ public class ControladorProducto implements ActionListener {
         productos.add(new Producto(0, "Memoria Ram", new TreeMap<>(
                 Map.of(
                         new Date(118, 8, 5), new Stock(50, new Valor(200, 10)),
-                        new Date(119, 10, 14), new Stock(200, new Date(119, 11, 10), new Valor(500, 10)),
+                        new Date(119, 10, 14), new Stock(200, new Date(119, 10, 10), new Valor(500, 10)),
                         new Date(120, 5, 6), new Stock(200, new Valor(1000, 10)),
                         new Date(120, 10, 8), new Stock(200, new Valor(2000, 10)),
+                        new Date(120, 10, 20), new Stock(80, null),
                         new Date(120, 11, 14), new Stock(200, new Valor(4000, 10))
                 ))
         ));
         cargarProductos();
-        cargarDatos(productos.size() - 1,null);
+        cargarDatos(productos.size() - 1, null);
         agregarControladores();
     }
 
@@ -66,53 +67,73 @@ public class ControladorProducto implements ActionListener {
         controladorPrincipal.getVistaPEPS().getjCB_Fecha().removeAllItems();
         controladorPrincipal.getVistaPEPS().getjL_FechaValor().setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
         int seleccion = -1;
-        long disponibilidad = 0;
+        long disponibilidad = 0, vendido = 0, vendidoMes = 0;
         double mayorPrecio = 0.0;
-        Date anterior = null, personalizada = null;  
-        if(fecha != null){
+        Date anterior = null, personalizada = null;
+        if (fecha != null) {
             try {
                 personalizada = new SimpleDateFormat("dd-MM-yyyy").parse(fecha);
-             } catch (ParseException ex) {
-                        
+            } catch (ParseException ex) {
+
             }
         }
         for (Map.Entry<Date, Stock> entry : productos.get(id).getStock().entrySet()) {
-            
-            if(personalizada != null){
-                if(entry.getValue().getFecha_baja() != null){
-                    disponibilidad += entry.getValue().getFecha_baja().compareTo(personalizada) == -1 && entry.getValue().getFecha_baja().compareTo(personalizada) == 0 ? entry.getValue().getCantidad() : 0;
-                }else if(entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0){
+            if (personalizada != null) {
+                if (entry.getValue().getFecha_baja() != null) {
+                    if(entry.getValue().getFecha_baja().compareTo(personalizada) == -1 && entry.getValue().getFecha_baja().compareTo(personalizada) == 0){
+                        disponibilidad += entry.getValue().getCantidad();
+                    }else if(!(entry.getValue().getFecha_baja().compareTo(personalizada) == 1)){
+                        vendido += entry.getValue().getCantidad();
+                        if(entry.getKey().getMonth() == personalizada.getMonth() && entry.getKey().getYear() == personalizada.getYear()){
+                            vendidoMes += entry.getValue().getCantidad();
+                        }
+                    }
+                } else if (entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0) {
                     disponibilidad += entry.getValue().getCantidad();
-                } 
-            }
-            else if (entry.getValue().getFecha_baja() == null) {
+                }
+            }else if (entry.getValue().getFecha_baja() == null) {
                 disponibilidad += entry.getValue().getCantidad();
+            }else{
+                vendido += entry.getValue().getCantidad();
+                
             }
             
             if (anterior == null) {
                 anterior = entry.getKey();
-                controladorPrincipal.getVistaPEPS().getjCB_Fecha().addItem(new SimpleDateFormat("dd-MM-yyyy").format(entry.getKey())); 
-                if(personalizada == null){seleccion++;}else if(entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0){seleccion++;}
+                controladorPrincipal.getVistaPEPS().getjCB_Fecha().addItem(new SimpleDateFormat("dd-MM-yyyy").format(entry.getKey()));
+                if (personalizada == null) {
+                    seleccion++;
+                } else if (entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0) {
+                    seleccion++;
+                }
             }
-            if (entry.getKey().getTime() != anterior.getTime()){
-               controladorPrincipal.getVistaPEPS().getjCB_Fecha().addItem(new SimpleDateFormat("dd-MM-yyyy").format(entry.getKey()));  
-               anterior = entry.getKey();
-               if(personalizada == null){seleccion++;}else if(entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0){seleccion++;}
+            if (entry.getKey().getTime() != anterior.getTime()) {
+                controladorPrincipal.getVistaPEPS().getjCB_Fecha().addItem(new SimpleDateFormat("dd-MM-yyyy").format(entry.getKey()));
+                anterior = entry.getKey();
+                if (personalizada == null) {
+                    seleccion++;
+                } else if (entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0) {
+                    seleccion++;
+                }
             }
-            if (entry.getValue().getValor().getNumero() > mayorPrecio) {
-                if(personalizada != null){
-                    if(entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0){
+            if (entry.getValue().getValor() != null) {
+                if (entry.getValue().getValor().getNumero() > mayorPrecio) {
+                    if (personalizada != null) {
+                        if (entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0) {
+                            mayorPrecio = entry.getValue().getValor().getNumero();
+                        }
+                    } else {
                         mayorPrecio = entry.getValue().getValor().getNumero();
                     }
-                }else{
-                    mayorPrecio = entry.getValue().getValor().getNumero();
-                }          
+                }
             }
-            System.out.println(seleccion);
+            
         }
+        controladorPrincipal.getVistaPEPS().getjTF_VentaMes().setText(String.valueOf(vendidoMes));
+        controladorPrincipal.getVistaPEPS().getjTF_VentaTotal().setText(String.valueOf(vendido));
         controladorPrincipal.getVistaPEPS().getjTF_Stock().setText(String.valueOf(disponibilidad) + " U");
         controladorPrincipal.getVistaPEPS().getjTF_Precio().setText(String.valueOf(mayorPrecio) + " $");
-        controladorPrincipal.getVistaPEPS().getjCB_Fecha().setSelectedIndex(seleccion);    
+        controladorPrincipal.getVistaPEPS().getjCB_Fecha().setSelectedIndex(seleccion);
     }
 
     @Override
@@ -125,13 +146,12 @@ public class ControladorProducto implements ActionListener {
                 break;
             case "Cargar":
                 if (!productos.isEmpty()) {
-                    cargarDatos(controladorPrincipal.getVistaPEPS().getjCB_Productos().getSelectedIndex(),null);
+                    cargarDatos(controladorPrincipal.getVistaPEPS().getjCB_Productos().getSelectedIndex(), null);
                 }
                 break;
             case "Ver":
-                if(!productos.isEmpty()){
-                    cargarDatos(controladorPrincipal.getVistaPEPS().getjCB_Productos().getSelectedIndex(),controladorPrincipal.getVistaPEPS().getjCB_Fecha().getSelectedItem().toString());
-                    System.out.println(controladorPrincipal.getVistaPEPS().getjCB_Fecha().getSelectedItem().toString());
+                if (!productos.isEmpty()) {
+                    cargarDatos(controladorPrincipal.getVistaPEPS().getjCB_Productos().getSelectedIndex(), controladorPrincipal.getVistaPEPS().getjCB_Fecha().getSelectedItem().toString());
                 }
                 break;
         }
