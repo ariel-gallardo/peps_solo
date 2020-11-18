@@ -133,23 +133,30 @@ public class ControladorProducto implements ActionListener {
                             disponibilidad += entry.getValue().getCantidad();
                             if (entry.getValue().hasSalidas()) {
                                 for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
-
                                     if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
                                         vendido += salida.getValue().getCantidad();
-                                        //Aca
                                     }
                                 }
                             }
                         }
                     } else if (entry.getValue().getFecha_baja() == null) {
-                        disponibilidad += entry.getValue().getCantidad();
+                       
                         if (entry.getValue().hasSalidas()) {
                             for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
                                 if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
-                                    vendido += salida.getValue().getCantidad();
-                                    //Aca
+                                    vendido += salida.getValue().getCantidad();  
+                                    if(salida.getValue().getFecha_baja() != null){
+                                        if(disponibilidad == 0){
+                                            disponibilidad += (entry.getValue().getCantidad()-salida.getValue().getCantidad());
+                                        }else{
+                                            disponibilidad -=salida.getValue().getCantidad();
+                                        }
+                                        
+                                    }
                                 }
                             }
+                        }else{
+                            disponibilidad += entry.getValue().getCantidad();
                         }
                     } else {
                         vendido += entry.getValue().getCantidad();
@@ -275,8 +282,8 @@ public class ControladorProducto implements ActionListener {
                 if (e.getSource().equals(getVistaPEPS().getjCB_Fecha())) {
                     seleccionado = getVistaPEPS().getjCB_Fecha().getSelectedIndex();
                 }
-                if (e.getSource().equals(getVistaPEPS().getjB_Salida()) && !getVistaPEPS().getjTF_UnidadesS().getText().equals("")) {
-                    if (!getVistaPEPS().getjTF_UnidadesS().getText().equals("") && Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText()) != 0) {
+                if (e.getSource().equals(getVistaPEPS().getjB_Salida())) {
+                    if (!getVistaPEPS().getjTF_UnidadesS().getText().isEmpty() && Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText()) != 0) {
                         long cantidad = Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText());
                         Date d = new Date();
                         d.setHours(0);
@@ -289,13 +296,14 @@ public class ControladorProducto implements ActionListener {
                             }      
                             cantidad = entry.getValue().agregarSalida(d, new Stock(cantidad));
                         }
-                        System.out.println("\n");
                         getVistaPEPS().getjTF_UnidadesS().setText("");
                         cargarDatos(productoActual, null);
-                    }else if(Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText()) == 0) {
-                        JOptionPane.showMessageDialog(getVistaPEPS(), "La cantidad debe ser superior a 0", "PEPS", 0);
                     }else{
-                        JOptionPane.showMessageDialog(getVistaPEPS(), "Campos vacios.", "PEPS", 0);
+                        if(getVistaPEPS().getjTF_UnidadesS().getText().isEmpty()){
+                            JOptionPane.showMessageDialog(getVistaPEPS(), "Campos vacios.", "PEPS", 0);
+                        }else if(Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText()) == 0){
+                            JOptionPane.showMessageDialog(getVistaPEPS(), "La cantidad debe ser superior a 0", "PEPS", 0);
+                        }
                     }
                 }
                 break;
