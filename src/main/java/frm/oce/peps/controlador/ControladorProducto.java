@@ -122,7 +122,23 @@ public class ControladorProducto implements ActionListener {
                     if (personalizada != null) {
                         if (entry.getValue().getFecha_baja() != null) {
                             if (entry.getValue().getFecha_baja().compareTo(personalizada) == -1 && entry.getValue().getFecha_baja().compareTo(personalizada) == 0) {
-                                disponibilidad += entry.getValue().getCantidad();
+                                                        if (entry.getValue().hasSalidas()) {
+                            for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
+                                if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
+                                    vendido += salida.getValue().getCantidad();  
+                                    if(salida.getValue().getFecha_baja() != null){
+                                        if(disponibilidad == 0){
+                                            disponibilidad += (entry.getValue().getCantidad()-salida.getValue().getCantidad());
+                                        }else{
+                                            disponibilidad -=salida.getValue().getCantidad();
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }else{
+                            disponibilidad += entry.getValue().getCantidad();
+                        }
                             } else if (!(entry.getValue().getFecha_baja().compareTo(personalizada) == 1)) {
                                 vendido += entry.getValue().getCantidad();
                                 if (entry.getKey().getMonth() == personalizada.getMonth() && entry.getKey().getYear() == personalizada.getYear()) {
@@ -130,7 +146,23 @@ public class ControladorProducto implements ActionListener {
                                 }
                             }
                         } else if (entry.getKey().before(personalizada)) {
+                                                    if (entry.getValue().hasSalidas()) {
+                            for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
+                                if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
+                                    vendido += salida.getValue().getCantidad();  
+                                    if(salida.getValue().getFecha_baja() != null){
+                                        if(disponibilidad == 0){
+                                            disponibilidad += (entry.getValue().getCantidad()-salida.getValue().getCantidad());
+                                        }else{
+                                            disponibilidad -=salida.getValue().getCantidad();
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }else{
                             disponibilidad += entry.getValue().getCantidad();
+                        }//////////////////////////////////////////////////////////////////////////////////***
                             if (entry.getValue().hasSalidas()) {
                                 for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
                                     if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
@@ -138,7 +170,7 @@ public class ControladorProducto implements ActionListener {
                                     }
                                 }
                             }
-                        }
+                        }//////////////////////////////////////////////////////////////////////////////////***
                     } else if (entry.getValue().getFecha_baja() == null) {
                        
                         if (entry.getValue().hasSalidas()) {
@@ -159,12 +191,17 @@ public class ControladorProducto implements ActionListener {
                             disponibilidad += entry.getValue().getCantidad();
                         }
                     } else {
-                        vendido += entry.getValue().getCantidad();
+                        for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
+                                                vendido += entry.getValue().getCantidad();
+
                         if ((entry.getKey().getMonth() == mesAnterior && entry.getKey().getYear() == anioAnterior) || mesAnterior == 0) {
+                            
                             vendidoMes += entry.getValue().getCantidad();
                         } else {
                             vendidoMes = 0;
                         }
+                        }
+                        
                     }
 
                     if (anterior == null) {
@@ -198,6 +235,16 @@ public class ControladorProducto implements ActionListener {
                     mesAnterior = entry.getKey().getMonth();
                     anioAnterior = entry.getKey().getYear();
                 }
+                /*
+                Date tDate = new Date();
+                tDate.setHours(0);
+                tDate.setMinutes(0);
+                tDate.setSeconds(0);
+                String fechaNueva = new SimpleDateFormat("dd-MM-yyyy").format(tDate);
+                if(!fechaNueva.equals(getVistaPEPS().getjCB_Fecha().getItemAt(getVistaPEPS().getjCB_Fecha().getItemCount()-1))){
+                    productos.get(productoActual).addStock(tDate, new Stock(0L, tDate, null));
+                    getVistaPEPS().getjCB_Fecha().addItem(fechaNueva);
+                }       */
                 getVistaPEPS().getjTF_VentaMes().setText(String.valueOf(vendidoMes) + " U");
                 getVistaPEPS().getjTF_VentaTotal().setText(String.valueOf(vendido) + " U");
                 getVistaPEPS().getjTF_Stock().setText(String.valueOf(disponibilidad) + " U");
@@ -309,7 +356,6 @@ public class ControladorProducto implements ActionListener {
                 break;
         }
     }
-
     public VistaPEPS getVistaPEPS() {
         return controladorPrincipal.getVistaPEPS();
     }
