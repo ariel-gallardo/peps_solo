@@ -66,6 +66,10 @@ public class Producto implements Serializable {
     public void setStock(TreeMap<Date, Stock> stock) {
         this.stock = stock;
     }
+    
+    public void addStock(Date date, Stock stock){
+        getStock().put(date, stock);
+    }
 
 
 }

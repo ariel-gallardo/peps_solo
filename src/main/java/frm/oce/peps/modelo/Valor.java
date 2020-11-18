@@ -13,6 +13,11 @@ public class Valor implements Serializable {
     private double porcentajeVenta;
 
     public Valor() {
+        this.numero = 0.0;
+    }
+    
+    public Valor(double numero){
+        this.numero = numero;
     }
 
     public Valor(double numero, double porcentajeVenta) {

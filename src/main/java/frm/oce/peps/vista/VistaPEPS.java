@@ -66,13 +66,12 @@ public class VistaPEPS extends javax.swing.JFrame {
         jL_UnidadesS = new javax.swing.JLabel();
         jTF_UnidadesS = new javax.swing.JTextField();
         jL_Salida = new javax.swing.JLabel();
-        jL_DisponibilidadS = new javax.swing.JLabel();
-        jTF_DisponibiliadS = new javax.swing.JTextField();
         jB_Salida = new javax.swing.JButton();
         jL_FechaValor = new javax.swing.JLabel();
         jL_Fecha = new javax.swing.JLabel();
         jL_NuevoProducto = new javax.swing.JLabel();
         jTF_NuevoProducto = new javax.swing.JTextField();
+        jL_Seleccion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(44, 62, 80));
@@ -111,10 +110,12 @@ public class VistaPEPS extends javax.swing.JFrame {
         jTF_Stock.setEditable(false);
         jTF_Stock.setBackground(new java.awt.Color(44, 62, 80));
         jTF_Stock.setForeground(new java.awt.Color(255, 255, 255));
+        jTF_Stock.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jTF_Precio.setEditable(false);
         jTF_Precio.setBackground(new java.awt.Color(44, 62, 80));
         jTF_Precio.setForeground(new java.awt.Color(255, 255, 255));
+        jTF_Precio.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jL_FechaActual.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jL_FechaActual.setForeground(new java.awt.Color(255, 255, 255));
@@ -131,11 +132,13 @@ public class VistaPEPS extends javax.swing.JFrame {
         jTF_VentaMes.setEditable(false);
         jTF_VentaMes.setBackground(new java.awt.Color(44, 62, 80));
         jTF_VentaMes.setForeground(new java.awt.Color(255, 255, 255));
+        jTF_VentaMes.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTF_VentaMes.setCaretColor(new java.awt.Color(255, 255, 255));
 
         jTF_VentaTotal.setEditable(false);
         jTF_VentaTotal.setBackground(new java.awt.Color(44, 62, 80));
         jTF_VentaTotal.setForeground(new java.awt.Color(255, 255, 255));
+        jTF_VentaTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
         jL_Resumen.setFont(new java.awt.Font("Work Sans", 1, 24)); // NOI18N
         jL_Resumen.setForeground(new java.awt.Color(255, 255, 255));
@@ -203,7 +206,7 @@ public class VistaPEPS extends javax.swing.JFrame {
                 .addGroup(jP_ProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jL_VentaTotal)
                     .addComponent(jTF_VentaTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(37, 37, 37))
         );
 
         jP_Registro.setBackground(new java.awt.Color(52, 73, 94));
@@ -215,6 +218,7 @@ public class VistaPEPS extends javax.swing.JFrame {
         jTF_PrecioUR.setEditable(false);
         jTF_PrecioUR.setBackground(new java.awt.Color(44, 62, 80));
         jTF_PrecioUR.setForeground(new java.awt.Color(255, 255, 255));
+        jTF_PrecioUR.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jC_PrecioUR.setBackground(new java.awt.Color(52, 73, 94));
         jC_PrecioUR.setFont(new java.awt.Font("Teko Light", 0, 18)); // NOI18N
@@ -222,6 +226,7 @@ public class VistaPEPS extends javax.swing.JFrame {
 
         jTF_UnidadesR.setBackground(new java.awt.Color(44, 62, 80));
         jTF_UnidadesR.setForeground(new java.awt.Color(255, 255, 255));
+        jTF_UnidadesR.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jL_PrecioUnitarioR.setFont(new java.awt.Font("Teko Light", 0, 18)); // NOI18N
         jL_PrecioUnitarioR.setForeground(new java.awt.Color(255, 255, 255));
@@ -260,7 +265,7 @@ public class VistaPEPS extends javax.swing.JFrame {
             jP_RegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jP_RegistroLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jL_NuevoRegistro)
+                .addComponent(jL_NuevoRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
                 .addGroup(jP_RegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTF_PrecioUR)
@@ -272,7 +277,7 @@ public class VistaPEPS extends javax.swing.JFrame {
                     .addComponent(jTF_UnidadesR, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jB_Registrar)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jP_Salida.setBackground(new java.awt.Color(52, 73, 94));
@@ -283,17 +288,11 @@ public class VistaPEPS extends javax.swing.JFrame {
 
         jTF_UnidadesS.setBackground(new java.awt.Color(44, 62, 80));
         jTF_UnidadesS.setForeground(new java.awt.Color(255, 255, 255));
+        jTF_UnidadesS.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jL_Salida.setFont(new java.awt.Font("Work Sans", 1, 24)); // NOI18N
         jL_Salida.setForeground(new java.awt.Color(255, 255, 255));
         jL_Salida.setText("Salida");
-
-        jL_DisponibilidadS.setFont(new java.awt.Font("Teko Light", 0, 18)); // NOI18N
-        jL_DisponibilidadS.setForeground(new java.awt.Color(255, 255, 255));
-        jL_DisponibilidadS.setText("Disponibilidad");
-
-        jTF_DisponibiliadS.setBackground(new java.awt.Color(44, 62, 80));
-        jTF_DisponibiliadS.setForeground(new java.awt.Color(255, 255, 255));
 
         jB_Salida.setText("Enviar Salida");
 
@@ -308,16 +307,12 @@ public class VistaPEPS extends javax.swing.JFrame {
                         .addComponent(jL_Salida)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jP_SalidaLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 52, Short.MAX_VALUE)
                         .addGroup(jP_SalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jP_SalidaLayout.createSequentialGroup()
                                 .addComponent(jL_UnidadesS)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTF_UnidadesS, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jP_SalidaLayout.createSequentialGroup()
-                                .addComponent(jL_DisponibilidadS)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTF_DisponibiliadS, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jB_Salida, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap())))
         );
@@ -330,11 +325,7 @@ public class VistaPEPS extends javax.swing.JFrame {
                 .addGroup(jP_SalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jL_UnidadesS)
                     .addComponent(jTF_UnidadesS, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jP_SalidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jL_DisponibilidadS)
-                    .addComponent(jTF_DisponibiliadS, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(39, 39, 39)
                 .addComponent(jB_Salida)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -351,66 +342,78 @@ public class VistaPEPS extends javax.swing.JFrame {
         jL_NuevoProducto.setForeground(new java.awt.Color(255, 255, 255));
         jL_NuevoProducto.setText("Nombre");
 
+        jL_Seleccion.setFont(new java.awt.Font("Open Sans Condensed", 0, 12)); // NOI18N
+        jL_Seleccion.setForeground(new java.awt.Color(236, 240, 241));
+        jL_Seleccion.setText("Producto actual: Nombre del producto");
+
         javax.swing.GroupLayout jP_PrincipalLayout = new javax.swing.GroupLayout(jP_Principal);
         jP_Principal.setLayout(jP_PrincipalLayout);
         jP_PrincipalLayout.setHorizontalGroup(
             jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jP_PrincipalLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jP_PrincipalLayout.createSequentialGroup()
-                        .addComponent(jP_Producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jP_Registro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jP_PrincipalLayout.createSequentialGroup()
                         .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jL_Titulo)
-                            .addComponent(jL_Contabilidad))
-                        .addGap(116, 116, 116)
+                            .addGroup(jP_PrincipalLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jL_Titulo)
+                                    .addComponent(jL_Contabilidad)))
+                            .addGroup(jP_PrincipalLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jP_Producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jP_PrincipalLayout.createSequentialGroup()
                                 .addComponent(jL_Fecha)
                                 .addGap(3, 3, 3)
                                 .addComponent(jL_FechaValor))
-                            .addComponent(jP_Salida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jP_PrincipalLayout.createSequentialGroup()
+                            .addComponent(jP_Salida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jP_Registro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jP_PrincipalLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jL_NuevoProducto)
                             .addComponent(jL_Productos))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCB_Productos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTF_NuevoProducto))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jB_Crear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jB_Cargar))))
+                            .addGroup(jP_PrincipalLayout.createSequentialGroup()
+                                .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCB_Productos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTF_NuevoProducto))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jB_Crear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jB_Cargar)))
+                            .addComponent(jL_Seleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jP_PrincipalLayout.setVerticalGroup(
             jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jP_PrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTF_NuevoProducto)
+                .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jL_NuevoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jB_Crear)))
+                        .addComponent(jB_Crear))
+                    .addComponent(jTF_NuevoProducto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jL_Productos)
+                    .addComponent(jB_Cargar)
                     .addComponent(jCB_Productos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jB_Cargar))
+                    .addComponent(jL_Productos))
+                .addGap(9, 9, 9)
+                .addComponent(jL_Seleccion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jP_PrincipalLayout.createSequentialGroup()
-                        .addComponent(jP_Producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jL_Titulo))
-                    .addGroup(jP_PrincipalLayout.createSequentialGroup()
                         .addComponent(jP_Registro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jP_Salida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jP_Salida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jP_PrincipalLayout.createSequentialGroup()
+                        .addComponent(jP_Producto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jL_Titulo)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jP_PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jL_Contabilidad)
@@ -427,7 +430,7 @@ public class VistaPEPS extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jP_Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jP_Principal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -479,7 +482,6 @@ public class VistaPEPS extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jCB_Productos;
     private javax.swing.JCheckBox jC_PrecioUR;
     private javax.swing.JLabel jL_Contabilidad;
-    private javax.swing.JLabel jL_DisponibilidadS;
     private javax.swing.JLabel jL_Fecha;
     private javax.swing.JLabel jL_FechaActual;
     private javax.swing.JLabel jL_FechaValor;
@@ -490,6 +492,7 @@ public class VistaPEPS extends javax.swing.JFrame {
     private javax.swing.JLabel jL_Productos;
     private javax.swing.JLabel jL_Resumen;
     private javax.swing.JLabel jL_Salida;
+    private javax.swing.JLabel jL_Seleccion;
     private javax.swing.JLabel jL_Stock;
     private javax.swing.JLabel jL_Titulo;
     private javax.swing.JLabel jL_UnidadesR;
@@ -500,7 +503,6 @@ public class VistaPEPS extends javax.swing.JFrame {
     private javax.swing.JPanel jP_Producto;
     private javax.swing.JPanel jP_Registro;
     private javax.swing.JPanel jP_Salida;
-    private javax.swing.JTextField jTF_DisponibiliadS;
     private javax.swing.JTextField jTF_NuevoProducto;
     private javax.swing.JTextField jTF_Precio;
     private javax.swing.JTextField jTF_PrecioUR;
@@ -589,14 +591,6 @@ public class VistaPEPS extends javax.swing.JFrame {
 
     public void setjL_Contabilidad1(JLabel jL_Contabilidad1) {
         this.jL_Contabilidad = jL_Contabilidad1;
-    }
-
-    public JLabel getjL_DisponibilidadS() {
-        return jL_DisponibilidadS;
-    }
-
-    public void setjL_DisponibilidadS(JLabel jL_DisponibilidadS) {
-        this.jL_DisponibilidadS = jL_DisponibilidadS;
     }
 
     public JLabel getjL_Fecha() {
@@ -759,14 +753,6 @@ public class VistaPEPS extends javax.swing.JFrame {
         this.jP_Salida = jP_Salida;
     }
 
-    public JTextField getjTF_DisponibiliadS() {
-        return jTF_DisponibiliadS;
-    }
-
-    public void setjTF_DisponibiliadS(JTextField jTF_DisponibiliadS) {
-        this.jTF_DisponibiliadS = jTF_DisponibiliadS;
-    }
-
     public JTextField getjTF_NuevoProducto() {
         return jTF_NuevoProducto;
     }
@@ -829,5 +815,13 @@ public class VistaPEPS extends javax.swing.JFrame {
 
     public void setjTF_VentaTotal(JTextField jTF_VentaTotal) {
         this.jTF_VentaTotal = jTF_VentaTotal;
+    }
+
+    public JLabel getjL_Seleccion() {
+        return jL_Seleccion;
+    }
+
+    public void setjL_Seleccion(JLabel jL_Seleccion) {
+        this.jL_Seleccion = jL_Seleccion;
     }
 }
