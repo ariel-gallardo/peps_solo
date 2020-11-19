@@ -38,7 +38,6 @@ public class ControladorProducto implements ActionListener {
         productos.add(new Producto(0, "Memoria Ram", new TreeMap<>(
                 Map.of(
                         new Date(118, 8, 5), new Stock(50, new Valor(200, 10)),
-                        new Date(119, 10, 14), new Stock(200, new Date(119, 10, 15), new Valor(500, 10)),
                         new Date(120, 5, 6), new Stock(200, new Valor(1000, 10)),
                         new Date(120, 10, 8), new Stock(200, new Valor(2000, 10))
                 //new Date(120, 10, 20), new Stock(80, null)
@@ -81,9 +80,10 @@ public class ControladorProducto implements ActionListener {
             getVistaPEPS().getjTF_Precio().setText("");
             getVistaPEPS().getjCB_Fecha().removeAllItems();
             getVistaPEPS().getjTF_NuevoProducto().setText("");
-            getVistaPEPS().getjCB_Productos().setSelectedIndex(productos.size() - 1);
+
             getVistaPEPS().getjL_Seleccion().setText("Producto Actual: " + getVistaPEPS().getjCB_Productos().getItemAt(productos.size() - 1));
             productoActual = productos.size() - 1;
+            cargarDatos(productoActual, null);
         } else {
             JOptionPane.showMessageDialog(getVistaPEPS(), "El producto debe tener un nombre", "PEPS", 1);
         }
@@ -97,172 +97,122 @@ public class ControladorProducto implements ActionListener {
         }
     }
 
-    private void cargarDatos(int id, String fecha) {
-
-        if (!productos.isEmpty()) {
-            if (productos.get(id).getStock() != null) {
-                int tempSeleccionado = seleccionado;
-                getVistaPEPS().getjCB_Fecha().removeAllItems();
-                getVistaPEPS().getjL_FechaValor().setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-                int seleccion = -1, mesAnterior = 0, anioAnterior = 0;
-                long disponibilidad = 0, vendido = 0, vendidoMes = 0;
-                double mayorPrecio = 0.0;
-                Date anterior = null, personalizada = null;
-                Valor valAnterior = null;
-                if (fecha != null) {
-                    try {
-                        personalizada = new SimpleDateFormat("dd-MM-yyyy").parse(fecha);
-                        personalizada.setDate(personalizada.getDate() + 1);
-                    } catch (ParseException ex) {
-
-                    }
-                }
-
-                for (Map.Entry<Date, Stock> entry : productos.get(id).getStock().entrySet()) {
-                    if (personalizada != null) {
-                        if (entry.getValue().getFecha_baja() != null) {
-                            if (entry.getValue().getFecha_baja().compareTo(personalizada) == -1 && entry.getValue().getFecha_baja().compareTo(personalizada) == 0) {
-                                                        if (entry.getValue().hasSalidas()) {
-                            for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
-                                if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
-                                    vendido += salida.getValue().getCantidad();  
-                                    if(salida.getValue().getFecha_baja() != null){
-                                        if(disponibilidad == 0){
-                                            disponibilidad += (entry.getValue().getCantidad()-salida.getValue().getCantidad());
-                                        }else{
-                                            disponibilidad -=salida.getValue().getCantidad();
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }else{
-                            disponibilidad += entry.getValue().getCantidad();
-                        }
-                            } else if (!(entry.getValue().getFecha_baja().compareTo(personalizada) == 1)) {
-                                vendido += entry.getValue().getCantidad();
-                                if (entry.getKey().getMonth() == personalizada.getMonth() && entry.getKey().getYear() == personalizada.getYear()) {
-                                    vendidoMes += entry.getValue().getCantidad();
-                                }
-                            }
-                        } else if (entry.getKey().before(personalizada)) {
-                                                    if (entry.getValue().hasSalidas()) {
-                            for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
-                                if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
-                                    vendido += salida.getValue().getCantidad();  
-                                    if(salida.getValue().getFecha_baja() != null){
-                                        if(disponibilidad == 0){
-                                            disponibilidad += (entry.getValue().getCantidad()-salida.getValue().getCantidad());
-                                        }else{
-                                            disponibilidad -=salida.getValue().getCantidad();
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }else{
-                            disponibilidad += entry.getValue().getCantidad();
-                        }//////////////////////////////////////////////////////////////////////////////////***
-                            if (entry.getValue().hasSalidas()) {
-                                for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
-                                    if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
-                                        vendido += salida.getValue().getCantidad();
-                                    }
-                                }
-                            }
-                        }//////////////////////////////////////////////////////////////////////////////////***
-                    } else if (entry.getValue().getFecha_baja() == null) {
-                       
-                        if (entry.getValue().hasSalidas()) {
-                            for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
-                                if (salida.getKey().compareTo(entry.getKey()) == -1 || entry.getKey().compareTo(entry.getKey()) == 0) {
-                                    vendido += salida.getValue().getCantidad();  
-                                    if(salida.getValue().getFecha_baja() != null){
-                                        if(disponibilidad == 0){
-                                            disponibilidad += (entry.getValue().getCantidad()-salida.getValue().getCantidad());
-                                        }else{
-                                            disponibilidad -=salida.getValue().getCantidad();
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }else{
-                            disponibilidad += entry.getValue().getCantidad();
-                        }
-                    } else {
-                        for (Map.Entry<Date, Stock> salida : entry.getValue().getSalidas().entrySet()) {
-                                                vendido += entry.getValue().getCantidad();
-
-                        if ((entry.getKey().getMonth() == mesAnterior && entry.getKey().getYear() == anioAnterior) || mesAnterior == 0) {
-                            
-                            vendidoMes += entry.getValue().getCantidad();
-                        } else {
-                            vendidoMes = 0;
-                        }
-                        }
-                        
-                    }
-
-                    if (anterior == null) {
-                        anterior = entry.getKey();
-                        getVistaPEPS().getjCB_Fecha().addItem(new SimpleDateFormat("dd-MM-yyyy").format(entry.getKey()));
-                    }
-                    if (entry.getKey().getTime() != anterior.getTime()) {
-                        getVistaPEPS().getjCB_Fecha().addItem(new SimpleDateFormat("dd-MM-yyyy").format(entry.getKey()));
-                        anterior = entry.getKey();
-                    }
-                    if (entry.getValue().getValor() != null) {
-                        /*
-                        if (entry.getValue().getValor().getNumero() > mayorPrecio) {
-                            if (personalizada != null) {
-                                if (entry.getKey().compareTo(personalizada) == -1 || entry.getKey().compareTo(personalizada) == 0) {
-                                    mayorPrecio = entry.getValue().getValor().getNumero();
-                                }
-                            } else {
-                                mayorPrecio = entry.getValue().getValor().getNumero();
-                            }
-                        }*/
-                        if (personalizada != null) {
-                            if (entry.getKey().getMonth() <= personalizada.getMonth() && entry.getKey().getDay() <= personalizada.getDay() && entry.getKey().getYear() <= personalizada.getYear()) {
-                                mayorPrecio = entry.getValue().getValor() == null ? (valAnterior != null ? valAnterior.getNumero() : 0) : entry.getValue().getValor().getNumero();
-                            }
-                        } else {
-                            mayorPrecio = entry.getValue().getValor().getNumero();
-                        }
-                    }
-                    valAnterior = entry.getValue().getValor();
-                    mesAnterior = entry.getKey().getMonth();
-                    anioAnterior = entry.getKey().getYear();
-                }
-                /*
-                Date tDate = new Date();
-                tDate.setHours(0);
-                tDate.setMinutes(0);
-                tDate.setSeconds(0);
-                String fechaNueva = new SimpleDateFormat("dd-MM-yyyy").format(tDate);
-                if(!fechaNueva.equals(getVistaPEPS().getjCB_Fecha().getItemAt(getVistaPEPS().getjCB_Fecha().getItemCount()-1))){
-                    productos.get(productoActual).addStock(tDate, new Stock(0L, tDate, null));
-                    getVistaPEPS().getjCB_Fecha().addItem(fechaNueva);
-                }       */
-                getVistaPEPS().getjTF_VentaMes().setText(String.valueOf(vendidoMes) + " U");
-                getVistaPEPS().getjTF_VentaTotal().setText(String.valueOf(vendido) + " U");
-                getVistaPEPS().getjTF_Stock().setText(String.valueOf(disponibilidad) + " U");
-                getVistaPEPS().getjTF_Precio().setText(String.valueOf(mayorPrecio) + " $");
-                getVistaPEPS().getjCB_Fecha().setSelectedIndex(tempSeleccionado);
-                getVistaPEPS().getjL_Seleccion().setText("Producto Actual: " + getVistaPEPS().getjCB_Productos().getItemAt(id));
-                productoActual = id;
-            } else {
-                JOptionPane.showMessageDialog(getVistaPEPS(), "Producto Nuevo", "PEPS", 1);
-                getVistaPEPS().getjL_Seleccion().setText("Producto Actual: " + getVistaPEPS().getjCB_Productos().getItemAt(id));
-                productoActual = id;
+    private void cargarFechas(int id) {
+        getVistaPEPS().getjCB_Fecha().removeAllItems();
+        String ultimaFecha = "";
+        for (Map.Entry<Date, Stock> entry : productos.get(id).getStock().entrySet()) {
+            String fecha = new SimpleDateFormat("dd-MM-yyyy").format(entry.getKey());
+            if (getVistaPEPS().getjCB_Fecha().getItemCount() == 0) {
+                getVistaPEPS().getjCB_Fecha().addItem(fecha);
+            } else if (!getVistaPEPS().getjCB_Fecha().getItemAt(getVistaPEPS().getjCB_Fecha().getItemCount() - 1).equals(fecha)) {
+                getVistaPEPS().getjCB_Fecha().addItem(fecha);
             }
-        } else {
-            JOptionPane.showMessageDialog(getVistaPEPS(), "Debe existir algun producto", "PEPS", 0);
-            getVistaPEPS().getjL_Seleccion().setText("Producto Actual: Ninguno");
-            productoActual = -1;
+            ultimaFecha = fecha;
+        }
+        String fechaHoy = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        if (!fechaHoy.equals(ultimaFecha)) {
+            getVistaPEPS().getjCB_Fecha().addItem(fechaHoy);
+        }
+    }
+
+    private boolean controlarFecha(String dia, String mes, String anio, int diaPersonalizado, int mesPersonalizado, int anioPersonalizado) {
+
+        int diaActual = Integer.parseInt(dia),
+                mesActual = Integer.parseInt(mes),
+                anioActual = Integer.parseInt(anio);
+        return diaActual == diaPersonalizado && mesActual == mesPersonalizado && anioActual == anioPersonalizado;
+    }
+
+    private void cargarStock(int id, String fechaSeleccionada) {
+        long disponibilidad = 0;
+        double precio = 0.0, precioAnterior = 0.0;
+        String mesAnterior = "", anioAnterior = "";
+        int diaPersonalizado = 0, mesPersonalizado = 0, anioPersonalizado = 0;
+        double ventaMes = 0.0;
+        double ventaTotal = 0.0;
+
+        if (fechaSeleccionada != null) {
+            diaPersonalizado = Integer.parseInt(fechaSeleccionada.substring(0, 2));
+            mesPersonalizado = Integer.parseInt(fechaSeleccionada.substring(3, 5));
+            anioPersonalizado = Integer.parseInt(fechaSeleccionada.substring(6, 10));
         }
 
+        if (productos.get(id).getStock() != null) {
+            for (Map.Entry<Date, Stock> entry : productos.get(id).getStock().entrySet()) {
+
+                var stock = entry.getValue();
+                var fecha = entry.getKey();
+                var precioActual = stock.getValor() != null ? stock.getValor().getNumero() : precioAnterior;
+
+                String fechaActualTexto = new SimpleDateFormat("dd-MM-yyyy").format(fecha);
+                String dia = fechaActualTexto.substring(0, 2);
+                String mes = fechaActualTexto.substring(3, 5);
+                String anio = fechaActualTexto.substring(6, 10);
+
+                if (mesAnterior.isEmpty() && anioAnterior.isEmpty()) {
+                    mesAnterior = mes;
+                    anioAnterior = anio;
+                }
+
+                if (stock.getFecha_baja() == null) {
+                    if (!stock.hasSalidas()) {
+                        disponibilidad += stock.getCantidad();
+                    } else {
+                        long cuenta = stock.getCantidad() - stock.isDisponible();
+                        if (cuenta > 0) {
+                            disponibilidad += cuenta;
+                        }
+                    }
+                }
+
+                if ((precioActual > precio || precioActual < precio) && precioActual != 0.0) {
+                    precio = precioActual;
+                    if (precioAnterior != precioActual && precioActual != 0.0) {
+                        precioAnterior = precioActual;
+                    }
+                }
+
+                if (!mes.equals(mesAnterior) && !anio.equals(anioAnterior)) {
+                    ventaMes = 0L;
+                }
+
+                for (Map.Entry<Date, Stock> salida : stock.getSalidas().entrySet()) {
+                    if (mes.equals(mesAnterior) && anio.equals(anioAnterior)) {
+                        ventaMes += salida.getValue().getCantidad();
+                    }
+                    if (salida.getValue().getFecha_baja() != null) {
+                        ventaTotal += salida.getValue().getCantidad();
+                    }
+                }
+
+                if (fechaSeleccionada != null) {
+                    if (controlarFecha(dia, mes, anio, diaPersonalizado, mesPersonalizado, anioPersonalizado)) {
+                        break;
+                    }
+                }
+
+                mesAnterior = mes;
+                anioAnterior = anio;
+            }
+        }
+
+        getVistaPEPS().getjTF_Stock().setText(String.valueOf(disponibilidad));
+        getVistaPEPS().getjTF_Precio().setText(String.valueOf(precio));
+        getVistaPEPS().getjTF_VentaMes().setText(String.valueOf(ventaMes));
+        getVistaPEPS().getjTF_VentaTotal().setText(String.valueOf(ventaTotal));
+        if (fechaSeleccionada != null) {
+            getVistaPEPS().getjCB_Fecha().setSelectedIndex(seleccionado);
+        }
+    }
+
+    private void cargarDatos(int id, String fecha) {
+        if (!productos.isEmpty()) {
+            cargarProductos();
+            cargarFechas(id);
+            cargarStock(id, fecha);
+            getVistaPEPS().getjCB_Productos().setSelectedIndex(productoActual);
+            getVistaPEPS().getjL_Seleccion().setText("Producto actual: " + getVistaPEPS().getjCB_Productos().getItemAt(productoActual));
+        }
     }
 
     @Override
@@ -270,22 +220,28 @@ public class ControladorProducto implements ActionListener {
         switch (e.getActionCommand()) {
             case "Crear":
                 crearProducto(getVistaPEPS().getjTF_NuevoProducto().getText());
+
                 break;
             case "Cargar":
                 if (getVistaPEPS().getjCB_Productos().getItemCount() > 0) {
+                    productoActual = getVistaPEPS().getjCB_Productos().getSelectedIndex();
                     cargarDatos(getVistaPEPS().getjCB_Productos().getSelectedIndex(), null);
+                    getVistaPEPS().getjCB_Fecha().setSelectedIndex(getVistaPEPS().getjCB_Fecha().getItemCount() - 1);
+                    getVistaPEPS().getjCB_Productos().setSelectedIndex(productoActual);
                 } else {
                     JOptionPane.showMessageDialog(getVistaPEPS(), "Debe seleccionar algun producto", "PEPS", 0);
                 }
                 break;
             case "Ver":
                 if (getVistaPEPS().getjCB_Fecha().getItemCount() > 0) {
-                    cargarDatos(getVistaPEPS().getjCB_Productos().getSelectedIndex(), getVistaPEPS().getjCB_Fecha().getSelectedItem().toString());
+                    seleccionado = getVistaPEPS().getjCB_Fecha().getSelectedIndex();
+                    cargarDatos(productoActual, getVistaPEPS().getjCB_Fecha().getItemAt(seleccionado));
                 } else {
                     JOptionPane.showMessageDialog(getVistaPEPS(), "Debe crear algun registro", "PEPS", 0);
                 }
                 break;
             case "Registrar":
+
                 if ((!getVistaPEPS().getjTF_PrecioUR().getText().equals("") && getVistaPEPS().getjC_PrecioUR().isSelected() && !getVistaPEPS().getjTF_UnidadesR().getText().equals("")) || (!getVistaPEPS().getjTF_UnidadesR().getText().equals("") && !getVistaPEPS().getjC_PrecioUR().isSelected())) {
                     Date tDate = new Date();
                     tDate.setHours(0);
@@ -309,9 +265,17 @@ public class ControladorProducto implements ActionListener {
                                 productos.get(productoActual).getStock().get(tDate).getValor().setNumero(Double.parseDouble(getVistaPEPS().getjTF_PrecioUR().getText()));
                             }
                         }
-
+                        getVistaPEPS().getjTF_PrecioUR().setText("");
+                        getVistaPEPS().getjTF_UnidadesR().setText("");
                     } else {
+                        if(productos.get(productoActual).getStock().isEmpty() && getVistaPEPS().getjTF_PrecioUR().getText().isEmpty()){
+                            JOptionPane.showMessageDialog(getVistaPEPS(), "La primera recarga debe tener un valor", "PEPS", 0);
+                            getVistaPEPS().getjTF_PrecioUR().setText("");
+                            return;
+                        }
                         productos.get(productoActual).addStock(tDate, new Stock(Long.parseLong(getVistaPEPS().getjTF_UnidadesR().getText()), getVistaPEPS().getjTF_PrecioUR().getText().equals("") ? null : new Valor(Long.parseLong(getVistaPEPS().getjTF_PrecioUR().getText()))));
+                        getVistaPEPS().getjTF_PrecioUR().setText("");
+                        getVistaPEPS().getjTF_UnidadesR().setText("");              
                     }
                     cargarDatos(productoActual, null);
                     getVistaPEPS().getjCB_Fecha().setSelectedIndex(productos.get(productoActual).getStock().size() - 1);
@@ -326,29 +290,31 @@ public class ControladorProducto implements ActionListener {
                         getVistaPEPS().getjTF_PrecioUR().setText("");
                     }
                 }
-                if (e.getSource().equals(getVistaPEPS().getjCB_Fecha())) {
-                    seleccionado = getVistaPEPS().getjCB_Fecha().getSelectedIndex();
-                }
                 if (e.getSource().equals(getVistaPEPS().getjB_Salida())) {
                     if (!getVistaPEPS().getjTF_UnidadesS().getText().isEmpty() && Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText()) != 0) {
-                        long cantidad = Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText());
-                        Date d = new Date();
-                        d.setHours(0);
-                        d.setMinutes(0);
-                        d.setSeconds(0);
-                        for (Map.Entry<Date, Stock> entry : productos.get(productoActual).getStock().entrySet()) {        
-                            if(cantidad == 0){
+                        if (Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText()) <= Long.parseLong(getVistaPEPS().getjTF_Stock().getText())) {
+                            long cantidad = Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText());
+                            Date d = new Date();
+                            d.setHours(0);
+                            d.setMinutes(0);
+                            d.setSeconds(0);
+                            for (Map.Entry<Date, Stock> entry : productos.get(productoActual).getStock().entrySet()) {
+                                /*if (cantidad == 0) {
                                 JOptionPane.showMessageDialog(getVistaPEPS(), "Carga completa");
                                 break;
-                            }      
-                            cantidad = entry.getValue().agregarSalida(d, new Stock(cantidad));
+                            }*/
+                                cantidad = entry.getValue().agregarSalida(d, new Stock(cantidad));
+                            }
+                            getVistaPEPS().getjTF_UnidadesS().setText("");
+                            cargarDatos(productoActual, null);
+                            getVistaPEPS().getjCB_Fecha().setSelectedIndex(getVistaPEPS().getjCB_Fecha().getItemCount() - 1);
+                        } else {
+                            JOptionPane.showMessageDialog(getVistaPEPS(), "La cantidad supera al disponible", "PEPS", 0);
                         }
-                        getVistaPEPS().getjTF_UnidadesS().setText("");
-                        cargarDatos(productoActual, null);
-                    }else{
-                        if(getVistaPEPS().getjTF_UnidadesS().getText().isEmpty()){
+                    } else {
+                        if (getVistaPEPS().getjTF_UnidadesS().getText().isEmpty()) {
                             JOptionPane.showMessageDialog(getVistaPEPS(), "Campos vacios.", "PEPS", 0);
-                        }else if(Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText()) == 0){
+                        } else if (Long.parseLong(getVistaPEPS().getjTF_UnidadesS().getText()) == 0) {
                             JOptionPane.showMessageDialog(getVistaPEPS(), "La cantidad debe ser superior a 0", "PEPS", 0);
                         }
                     }
@@ -356,6 +322,7 @@ public class ControladorProducto implements ActionListener {
                 break;
         }
     }
+
     public VistaPEPS getVistaPEPS() {
         return controladorPrincipal.getVistaPEPS();
     }

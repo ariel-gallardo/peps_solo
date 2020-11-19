@@ -25,11 +25,13 @@ public class Producto implements Serializable {
     public Producto(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
+        stock = new TreeMap<>();
     }
     
 
     public Producto(String nombre) {
         this.nombre = nombre;
+        stock = new TreeMap<>();
     }
 
     public Producto(String nombre, TreeMap<Date, Stock> stock) {

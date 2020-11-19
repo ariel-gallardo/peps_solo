@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.TreeMap;
 
-public class Stock implements Serializable {
+public final class Stock implements Serializable {
 
     private long id;
     private long cantidad;
@@ -30,14 +30,6 @@ public class Stock implements Serializable {
         this.cantidad = cantidad;
         this.valor = valor;
         salidas = new TreeMap<>();
-    }
-
-    public Stock(long cantidad, Date fecha_baja, Valor valor) {
-        this.cantidad = cantidad;
-        this.fecha_baja = fecha_baja;
-        this.valor = valor;
-        salidas = new TreeMap<>();
-        agregarSalida(fecha_baja, this);
     }
 
     public long getId() {
@@ -92,16 +84,16 @@ public class Stock implements Serializable {
         if (getFecha_baja() == null) {
             long cuenta = 0L;
             stock.setValor(valor);
-            stock.setFecha_baja(date);
-            if (stock.getCantidad() > getCantidad() && isDisponible() >= 0 && isDisponible() <= getCantidad()) {        
-                cuenta = stock.getCantidad() - getCantidad(); 
+            stock.setFecha_baja(date);   
+            
+            if (stock.getCantidad() > getCantidad() && isDisponible() >= 0 && isDisponible() <= getCantidad()) {   //stock.getCantidad() > getCantidad() && 
+                cuenta = stock.getCantidad() >= getCantidad() ? stock.getCantidad() - getCantidad() : getCantidad() - stock.getCantidad(); //stock.getCantidad() - getCantidad();           
                 stock.setCantidad(isDisponible() > 0 && isDisponible() < getCantidad() ? isDisponible() : getCantidad());
             }
-            salidas.put(date, stock);
+            salidas.put(date, stock);           
             if ((isDisponible() == getCantidad())) {
                 setFecha_baja(date);
                 if (cuenta > 0L) {
-                    System.out.println("Adicional: "+cuenta);
                     return cuenta;
                 }
             }
