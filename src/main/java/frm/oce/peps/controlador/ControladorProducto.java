@@ -45,6 +45,7 @@ public class ControladorProducto implements ActionListener {
                 //new Date(120, 11, 18), new Stock(200, new Date(120, 11, 18), null)
                 ))
         ));
+        productos.get(0).getStock().get(new Date(120, 10, 8)).agregarSalida(new Date(120, 10, 8), new Stock(20L));
         //productos.get(0).getStock().get(new Date(120, 11, 14)).agregarSalida(new Date(120, 11, 15), new Stock(100L));
         cargarProductos();
         cargarDatos(productos.size() - 1, null);
@@ -172,17 +173,16 @@ public class ControladorProducto implements ActionListener {
                     }
                 }
 
-                if (!mes.equals(mesAnterior) && !anio.equals(anioAnterior)) {
-                    ventaMes = 0L;
-                }
-
                 for (Map.Entry<Date, Stock> salida : stock.getSalidas().entrySet()) {
-                    if (mes.equals(mesAnterior) && anio.equals(anioAnterior)) {
+                    if(salida.getKey().getMonth()+1 == Integer.parseInt(mes) && salida.getKey().getYear()+1900 == Integer.parseInt(anio)){
                         ventaMes += salida.getValue().getCantidad();
                     }
+                    
+
                     if (salida.getValue().getFecha_baja() != null) {
                         ventaTotal += salida.getValue().getCantidad();
                     }
+
                 }
 
                 if (fechaSeleccionada != null) {
@@ -190,7 +190,6 @@ public class ControladorProducto implements ActionListener {
                         break;
                     }
                 }
-
                 mesAnterior = mes;
                 anioAnterior = anio;
             }
@@ -257,7 +256,7 @@ public class ControladorProducto implements ActionListener {
                     }
                     if (existe) {
                         productos.get(productoActual).getStock().get(tDate).setCantidad(productos.get(productoActual).getStock().get(tDate).getCantidad() + Long.parseLong(getVistaPEPS().getjTF_UnidadesR().getText()));
-                        
+
                         if (productos.get(productoActual).getStock().get(tDate).getValor() == null) {
                             productos.get(productoActual).getStock().get(tDate).setValor(new Valor());
                         } else {
@@ -268,14 +267,14 @@ public class ControladorProducto implements ActionListener {
                         getVistaPEPS().getjTF_PrecioUR().setText("");
                         getVistaPEPS().getjTF_UnidadesR().setText("");
                     } else {
-                        if(productos.get(productoActual).getStock().isEmpty() && getVistaPEPS().getjTF_PrecioUR().getText().isEmpty()){
+                        if (productos.get(productoActual).getStock().isEmpty() && getVistaPEPS().getjTF_PrecioUR().getText().isEmpty()) {
                             JOptionPane.showMessageDialog(getVistaPEPS(), "La primera recarga debe tener un valor", "PEPS", 0);
                             getVistaPEPS().getjTF_PrecioUR().setText("");
                             return;
                         }
                         productos.get(productoActual).addStock(tDate, new Stock(Long.parseLong(getVistaPEPS().getjTF_UnidadesR().getText()), getVistaPEPS().getjTF_PrecioUR().getText().equals("") ? null : new Valor(Long.parseLong(getVistaPEPS().getjTF_PrecioUR().getText()))));
                         getVistaPEPS().getjTF_PrecioUR().setText("");
-                        getVistaPEPS().getjTF_UnidadesR().setText("");              
+                        getVistaPEPS().getjTF_UnidadesR().setText("");
                     }
                     cargarDatos(productoActual, null);
                     getVistaPEPS().getjCB_Fecha().setSelectedIndex(productos.get(productoActual).getStock().size() - 1);

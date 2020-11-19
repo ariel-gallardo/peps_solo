@@ -84,7 +84,7 @@ public final class Stock implements Serializable {
         if (getFecha_baja() == null) {
             long cuenta = 0L;
             stock.setValor(valor);
-            stock.setFecha_baja(date);   
+            stock.setFecha_baja(new Date());   
             
             if (stock.getCantidad() > getCantidad() && isDisponible() >= 0 && isDisponible() <= getCantidad()) {   //stock.getCantidad() > getCantidad() && 
                 cuenta = stock.getCantidad() >= getCantidad() ? stock.getCantidad() - getCantidad() : getCantidad() - stock.getCantidad(); //stock.getCantidad() - getCantidad();           
@@ -92,7 +92,7 @@ public final class Stock implements Serializable {
             }
             salidas.put(date, stock);           
             if ((isDisponible() == getCantidad())) {
-                setFecha_baja(date);
+                setFecha_baja(new Date());
                 if (cuenta > 0L) {
                     return cuenta;
                 }
